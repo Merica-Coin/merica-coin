@@ -1,4 +1,5 @@
 # Welcome to Merica Coin #
+
 ## Freedom & Privacy Focused AF Crypto Coin Developed for Merica’ ##
 
  ----
