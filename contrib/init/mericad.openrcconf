@@ -1,0 +1,33 @@
+# /etc/conf.d/mericad: config file for /etc/init.d/mericad
+
+# Config file location
+#MERICAD_CONFIGFILE="/etc/merica/merica.conf"
+
+# What directory to write pidfile to?  (created and owned by $MERICAD_USER)
+#MERICAD_PIDDIR="/var/run/mericad"
+
+# What filename to give the pidfile
+#MERICAD_PIDFILE="${MERICAD_PIDDIR}/mericad.pid"
+
+# Where to write mericad data (be mindful that the blockchain is large)
+#MERICAD_DATADIR="/var/lib/mericad"
+
+# User and group to own mericad process
+#MERICAD_USER="merica"
+#MERICAD_GROUP="merica"
+
+# Path to mericad executable
+#MERICAD_BIN="/usr/bin/mericad"
+
+# Nice value to run mericad under
+#MERICAD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#MERICAD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for mericad to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+MERICAD_SIGTERM_TIMEOUT=600

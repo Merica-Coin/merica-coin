@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+#  mericad The merica core server.
+#
+#
+# chkconfig: 345 80 20
+# description: mericad
+# processname: mericad
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/mericad, see below
+if [ -f /etc/sysconfig/mericad ]; then
+        . /etc/sysconfig/mericad
+fi
+
+RETVAL=0
+
+prog=mericad
+# you can override the lockfile via MERICAD_LOCKFILE in /etc/sysconfig/mericad
+lockfile=${MERICAD_LOCKFILE-/var/lock/subsys/mericad}
+
+# mericad defaults to /usr/bin/mericad, override with MERICAD_BIN
+mericad=${MERICAD_BIN-/usr/bin/mericad}
+
+# mericad opts default to -disablewallet, override with MERICAD_OPTS
+mericad_opts=${MERICAD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $mericad $mericad_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog -t600
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

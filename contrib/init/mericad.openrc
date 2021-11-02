@@ -1,0 +1,92 @@
+#!/sbin/openrc-run
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/merica/.merica" ]; then
+	MERICAD_DEFAULT_DATADIR="/var/lib/merica/.merica"
+else
+	MERICAD_DEFAULT_DATADIR="/var/lib/mericad"
+fi
+
+MERICAD_CONFIGFILE=${MERICAD_CONFIGFILE:-/etc/merica/merica.conf}
+MERICAD_PIDDIR=${MERICAD_PIDDIR:-/var/run/mericad}
+MERICAD_PIDFILE=${MERICAD_PIDFILE:-${MERICAD_PIDDIR}/mericad.pid}
+MERICAD_DATADIR=${MERICAD_DATADIR:-${MERICAD_DEFAULT_DATADIR}}
+MERICAD_USER=${MERICAD_USER:-${MERICA_USER:-merica}}
+MERICAD_GROUP=${MERICAD_GROUP:-merica}
+MERICAD_BIN=${MERICAD_BIN:-/usr/bin/mericad}
+MERICAD_NICE=${MERICAD_NICE:-${NICELEVEL:-0}}
+MERICAD_OPTS="${MERICAD_OPTS:-${MERICA_OPTS}}"
+
+name="MERICA Core Daemon"
+description="MERICA cryptocurrency P2P network daemon"
+
+command="/usr/bin/mericad"
+command_args="-pid=\"${MERICAD_PIDFILE}\" \
+		-conf=\"${MERICAD_CONFIGFILE}\" \
+		-datadir=\"${MERICAD_DATADIR}\" \
+		-daemon \
+		${MERICAD_OPTS}"
+
+required_files="${MERICAD_CONFIGFILE}"
+start_stop_daemon_args="-u ${MERICAD_USER} \
+			-N ${MERICAD_NICE} -w 2000"
+pidfile="${MERICAD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${MERICAD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${MERICAD_USER}:${MERICAD_GROUP}" \
+	"${MERICAD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${MERICAD_USER}:${MERICAD_GROUP}" \
+	"${MERICAD_PIDDIR}"
+
+	checkpath -f \
+	-o ${MERICAD_USER}:${MERICAD_GROUP} \
+	-m 0660 \
+	${MERICAD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${MERICAD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run mericad."
+		eerror "The setting must appear in ${MERICAD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"MERICA Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}
