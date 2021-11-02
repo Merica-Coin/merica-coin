@@ -1,5 +1,6 @@
 # Welcome to Merica Coin #
-## Freedom AF Crypto Coin for Merica' ##
+## Freedom & Privacy Focused AF Crypto Coin Developed for Merica’ ##
+
  ----
 ![alt text](https://github.com/ttracx/merica-coin/blob/main/src/merica_eagle_profile.png)
 
