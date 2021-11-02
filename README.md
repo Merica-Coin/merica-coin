@@ -1,7 +1,7 @@
 # Welcome to Merica Coin #
-
+## Freedom AF Crypto Coin for Merica' ##
  ----
 
-## Merica Coin is a cryptocurrency that aims to bring all of Merica  folks and them under a BigAF coin ##
+## Merica Coin is a cryptocurrency that aims to empower all of Merica' with the Freedom of Digital Currency — minus the BS & Privacy Concerns ##
 
-### Team Merica Money Crypto ###
+### https://merica-coin.com ###
