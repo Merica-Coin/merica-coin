@@ -13,6 +13,7 @@ Coin name: MericaCoin
 Coin abbreviation: MERICA
 Coin supply: 51000000 coins
 Coin unit: Satoshi
+Block reward:	50 coins
 
 ```
 
