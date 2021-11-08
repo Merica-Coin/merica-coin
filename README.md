@@ -1,5 +1,5 @@
 # **MERICA COIN** #  
-
+##### *Currently being updated* #####
 #### *Freedom & Privacy Focused AF Crypto Blockchain & Coin Developed for Merica'* ####
 
 ![alt text](https://github.com/ttracx/merica-coin/blob/main/src/merica_eagle_profile.png)
@@ -9,9 +9,10 @@
 ######  MERICA' Blockchain utilizes SHA-256 with Proof of Work. ###### 
 
 ```
-Coin name: MERICA 
+Coin name: MericaCoin 
 Coin abbreviation: MERICA
-Coin supply: 21000000 coins
+Coin supply: 51000000 coins
+Coin unit: Satoshi
 
 ```
 
